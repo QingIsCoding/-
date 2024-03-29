@@ -1,0 +1,19 @@
+//动态规划
+class Solution 
+{
+public:
+    int minCostClimbingStairs(vector<int>& cost) 
+    {
+        //2 <= cost.length <= 1000
+        //不用判断n为0或1的情况
+        int p = 0, q = 0, r = 0;
+        for(int i = 2; i <= cost.size(); ++i)
+        {
+            r = min(p + cost[i - 2], q + cost[i - 1]);
+            p = q;
+            q = r;
+        }
+        
+         return r;
+    }
+};

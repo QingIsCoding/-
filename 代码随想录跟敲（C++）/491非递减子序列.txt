@@ -1,0 +1,35 @@
+//递归枚举 + 减枝
+class Solution
+{
+public:
+    void backtracking(vector<int>& nums, int startIndex)
+    {
+        if(path.size() > 1) res.push_back(path);
+
+        unordered_set<int> uset; 
+
+        for(int i = startIndex; i < nums.size(); ++i)
+        {
+            //非递减子序列:!path.empty() && nums[i] < path.back()
+            //树层去重:uset.find(nums[i]) != uset.end()
+            if((!path.empty() && nums[i] < path.back()) || uset.find(nums[i]) != uset.end()) continue;
+
+            //uset不用回溯，每次只记录本层元素是否使用过
+            uset.insert(nums[i]);
+            path.push_back(nums[i]);
+            backtracking(nums, i + 1);
+            path.pop_back();
+        }
+    }
+
+    vector<vector<int>> findSubsequences(vector<int>& nums)
+    {
+        backtracking(nums, 0);
+
+        return res;
+    }
+
+private:
+    vector<vector<int>> res;
+    vector<int> path;
+};

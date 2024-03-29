@@ -1,0 +1,35 @@
+//回溯//
+//动态规划
+class Solution 
+{
+public:
+    int findTargetSumWays(vector<int>& nums, int target) 
+    {
+        //pos:正号个数，neg:负号个数，sum:nums.size()
+        //pos + neg = sum
+        //pos - neg = target
+        //pos = (sum + target) / 2
+        int sum = 0;
+        
+        for(auto num : nums) sum += num;
+
+        if(abs(target) > sum) return 0;
+        if((sum + target) & 1) return 0;
+    
+        int pos= (sum + target) / 2;
+        //dp[i][j]:使用下标0~i的nums[i]来装满容量为j的背包，共有dp[i][j]种方法
+        //dp[j]使用滚动数组，来减小空间复杂度
+        vector<int> dp(pos+ 1);
+        //实质上是dp[0][0] = 1，使用下标0~0一个数字nums[0]来装满容量为0的背包时
+        //唯一方法就是什么也不放，也满足后面的初始化
+        dp[0] = 1;
+
+        for(int i = 0; i < nums.size(); ++i)
+            for(int j = pos; j >= nums[i]; j--)
+                //选第i个数nums[i]，方法数为dp[j]
+                //不选第i个数nums[i]，方法数为dp[j - nums[i]]
+                dp[j] = dp[j] + dp[j - nums[i]];
+    
+        return dp[pos];
+    }
+};

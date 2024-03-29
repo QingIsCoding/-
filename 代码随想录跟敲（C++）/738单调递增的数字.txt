@@ -1,0 +1,23 @@
+//贪心
+class Solution
+{
+public:
+    int monotoneIncreasingDigits(int n)
+    {
+        string strN = to_string(n);
+        //防止flag未被赋值时，进入第二个for循环
+        int flag = strN.size();
+
+        for(int i = strN.size() - 1; i >= 1; --i)
+            if(strN[i - 1] > strN[i])
+            {
+                flag = i;
+                --strN[i - 1];
+            }
+        
+        for(int i = flag; i < strN.size(); ++i)
+            strN[i] = '9';
+        
+        return stoi(strN);
+    }
+};

@@ -1,0 +1,30 @@
+//单调栈 + 循环数组
+class Solution
+{
+public:
+    vector<int> nextGreaterElements(vector<int>& nums)
+    {
+        stack<int> stk;
+        vector<int> res(nums.size(), -1);
+
+        //原始nums: 0 ~ n - 1   复制后的nums: n ~ 2n - 1
+        //res: 0 ~ n - 1(假设res的下标为k)
+        for(int i = 0; i < 2 * nums.size() - 1; ++i)
+        {
+            while(!stk.empty() && nums[i % nums.size()] > nums[stk.top()])
+            {
+                //1:nums[k]的下一个更大元素在k+1~n-1(不需要循环遍历)
+                //在0~n-1中赋值一次给res，在n~2n-1中赋值一次相同的值给res
+                //2:nums[k]的下一个更大元素在0~k-1(需要循环遍历)
+                //在n~2n-1中赋值一次给res
+                //由于没有2n~3n-1，不会再赋值给res
+                res[stk.top()] = nums[i % nums.size()];
+                stk.pop();
+            }
+
+            stk.push(i % nums.size());
+        }
+
+        return res;
+    }
+};

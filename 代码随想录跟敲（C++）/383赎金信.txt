@@ -1,0 +1,22 @@
+//字符统计
+class Solution 
+{
+public:
+    bool canConstruct(string ransomNote, string magazine) 
+    {
+        if(ransomNote.size() > magazine.size()) return false;
+
+        int record[26] = {0};
+
+        for(auto& ch : magazine) record[ch - 'a']++;
+        
+        for(auto& ch : ransomNote)
+        {
+            record[ch - 'a']--;
+
+            if(record[ch - 'a'] < 0) return false;
+        }
+
+        return true;
+    }
+};

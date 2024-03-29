@@ -1,0 +1,21 @@
+//分组 + 哈希表
+class Solution 
+{
+public:
+    int fourSumCount(vector<int>& nums1, vector<int>& nums2, vector<int>& nums3, vector<int>& nums4) 
+    {
+        unordered_map<int, int> countAB;
+
+        for(int A : nums1)
+            for(int B : nums2)
+                countAB[A + B]++;
+        
+        int count = 0;
+
+        for(int C : nums3)
+            for(int D : nums4)
+                if(countAB.find(-(C + D)) != countAB.end()) count += countAB[-(C + D)];
+        
+        return count;
+    }
+};

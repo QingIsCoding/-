@@ -1,0 +1,36 @@
+//贪心
+class Solution
+{
+public:
+    int wiggleMaxLength(vector<int>& nums)
+    {
+        //摆动序列长度
+        int len = 1;
+        //之前的变化 1:升高 2:降低
+        int preChange = 0;
+
+        for(int i = 1; i < nums.size(); ++i)
+        {
+            //上升:nums[i] > nums[i - 1]
+            if(nums[i] > nums[i - 1])
+            {
+                if(preChange == 1) continue;
+
+                preChange = 1;
+                ++len;
+            }
+            //下降:nums[i] < nums[i - 1]
+            else if(nums[i] < nums[i - 1])
+            {
+                if(preChange == 2) continue;
+
+                preChange = 2;
+                ++len;
+            }
+            //无变化:nums[i] == nums[i - 1]
+            else continue;
+        }
+
+        return len;
+    }
+};

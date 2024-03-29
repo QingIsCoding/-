@@ -1,0 +1,57 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+///贪心
+class Solution
+{
+public:
+    //1:有摄像头+有覆盖
+    //2:无摄像头+有覆盖
+    //3:无摄像头+无覆盖
+    int traversal(TreeNode* cur)
+    {
+        //叶子节点的子节点返回无摄像头+有覆盖(2)
+        //才能使叶子节点的父节点为有摄像头+有覆盖(1)
+        if(cur == nullptr) return 2;
+
+        int left = traversal(cur->left);
+        int right = traversal(cur->right);
+
+        //A:左右子节点都为无摄像头+有覆盖(2)，该节点为无摄像头+无覆盖(3)
+        if(left == 2 && right == 2) return 3;
+        //B:左右子节点有一个为无摄像头+无覆盖(3)，该节点为有摄像头+有覆盖(1)
+        if(left == 3 || right == 3) 
+        {
+            ++res;
+            return 1;
+        }
+        //C:左右子节点有一个为有摄像头+有覆盖(1)，该节点为无摄像头+有覆盖(2)
+        //在B之后，排除了一个子节点为无摄像头+无覆盖(3)和一个子节点为有摄像头+有覆盖(1)的情况
+        //因为这种情况要该节点为有摄像头+有覆盖(1)
+        if(left == 1 || right == 1) return 2;
+        
+        //随便返回，走不到这一步
+        return -1;
+    }
+
+
+    int minCameraCover(TreeNode* root)
+    {
+        //D:root为无摄像头+无覆盖(3)，没有父节点为有摄像头+有覆盖(1)来覆盖root
+        //手动覆盖root
+        if(traversal(root) == 3) ++res;
+
+        return res;
+    }
+
+private:
+    int res;
+};

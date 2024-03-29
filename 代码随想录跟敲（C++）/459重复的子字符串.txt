@@ -1,0 +1,63 @@
+//优化的 KMP 算法
+class Solution 
+{
+public:  
+    vector<int> getNext(string s)
+    {
+        if(s.size() == 1) return {-1};
+
+        vector<int> next(s.size());
+        //退无可退，特殊标记为-1
+        next[0] = -1;
+        //前缀不包含尾字符，后缀不包含首字符
+        //下标为1的位置，前面只有一个字符(下标为0)，没有前后缀
+        next[1] = 0;
+        //准备计算从下标为2开始的next数组的值
+        int i = 2;
+        //cn:下标为i-1的字符与下标为cn的字符进行比较
+        int cn = 0;
+
+        while(i < next.size())
+        {
+            //比较s[i - 1] == s[cn]成功，更新next[i] = cn + 1(++cn)
+            //下次要比较新的s[i - 1] == s[cn]?
+            //i++，++cn后，比较s[i - 1] == s[cn]就是比较s[i] == s[cn + 1]
+            if(s[i - 1] == s[cn]) next[i++] = ++cn;
+            //比较s[i - 1] == s[cn]失败
+            //尝试比较s[i - 1] == s[next[cn]]
+            else if(cn > 0) cn = next[cn];
+            //退无可退，next[i] = 0
+            else next[i++] = 0;
+        }
+
+        return next;
+    }
+
+    bool repeatedSubstringPattern(string s) 
+    {
+        //next数组长度为1时，next[0] = -1
+        //避免s[next[s.size() - 1]] = s[next[1 - 1]] = s[next[0]] = s[-1]的特殊情况
+        //s的长度为1，不满足题意，直接返回false
+        if(s.size() == 1) return false;
+
+        //下标i     0   1   2   3   4   5
+        //字符串    a   a   b   a   a   b
+        //next[i]   -1  0   1   0   1   2 
+        vector<int> next = getNext(s);
+
+        //LSPS:Longest Same Prefix-Suffix(s的最长公共前后缀)
+        //next[i]代表字符串中下标为0~i-1的最长公共前后缀
+        //但s的最长公共前后缀还与字符串中下标为i的数有关
+        int LSPS;
+
+        //s的最后一位和第next[s.size() - 1]位相同
+        //s的最长公共前后缀为字符串中下标为0~i-1的最长公共前后缀+1
+        if(s[s.size() - 1] == s[next[s.size() - 1]]) LSPS = next[s.size() - 1] + 1;
+        //否则s的最长公共前后缀为0
+        else LSPS = 0;
+        
+        //周期字符串问题(两种方法)
+        //https://writings.sh/post/algorithm-repeated-string-pattern
+        return LSPS != 0 && s.size() % (s.size() - LSPS) == 0;
+    }
+};

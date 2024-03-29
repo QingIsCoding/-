@@ -1,0 +1,24 @@
+//动态规划
+class Solution 
+{
+public:
+    int combinationSum4(vector<int>& nums, int target) 
+    {
+        vector<int> dp(target + 1);
+        dp[0] = 1;
+ 
+        //排列：先背包，后物品(物品1和物品2没有先后关系)
+        //(1,2) (2,1) 多种情况
+        //组合：先物品(物品1在物品2之前)，后背包
+        //(1,2) 一种情况
+        for(int j = 0; j <= target; ++j)
+            for(int i = 0; i < nums.size(); ++i)
+                if(j >= nums[i] && dp[j - nums[i]] < INT_MAX - dp[j])
+                    //dp[j] + dp[j - nums[i]]可能会爆int
+                    //但最终的dp[target]不受其影响
+                    dp[j] += dp[j - nums[i]];
+
+        return  dp[target];
+    }
+};
+//题目说答案保证符合32位整数范围，意思应该就是无符号32位整数，如果用有符号int可能就会溢出。之所以加了限制还能通过，应该是所有测试例子dp[target]本身的数没有溢出，打个比方nums里没有1，但是dp[target-1]溢出了，所以求dp[target-1]的时候遇到了那个限制跳过没有求dp[target-1]的值，但是不影响求dp[target]的值，因为反正nums里没有1，dp[target]自然也就跟dp[target-1]没有关系了

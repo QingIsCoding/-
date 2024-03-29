@@ -1,0 +1,39 @@
+class Solution
+{
+public:
+    bool backtracking(vector<string>& res, int ticketNum)
+    {
+        if(res.size() == ticketNum + 1) return true;
+
+        for(pair<const string, int>& target : targets[res[res.size() - 1]])
+            if(target.second > 0)
+            {
+                res.push_back(target.first);
+                --target.second;
+
+                if(backtracking(res, ticketNum)) return true;
+
+                ++target.second;
+                res.pop_back();
+            }
+        
+        return false;
+    }
+
+    vector<string> findItinerary(vector<vector<string>>& tickets)
+    {
+        targets.clear();
+
+        for(const vector<string>& ticket : tickets) ++targets[ticket[0]][ticket[1]];
+
+        res.push_back("JFK");
+        backtracking(res, tickets.size());
+
+        return res;
+    }
+
+private:
+    vector<string> res;
+    //unordered_map<出发机场, map<到达机场, 航班次数>> targets
+    unordered_map<string, map<string, int>> targets;
+};
