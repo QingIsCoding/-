@@ -1,0 +1,36 @@
+//递归实现组合型枚举
+class Solution
+{
+public:
+    void backtracking(int n, int k, int startIndex)
+    {
+        if(path.size() == k)
+        {
+            res.push_back(path);
+            
+            return;
+        }
+
+        //path中已有path.size()个数
+        //path还需k - path.size()个数来填满
+        //[x, n]的数组长度n - x + 1至少要大于等于k - path.size()才有继续遍历的必要
+        //n - x + 1 >= k - path.size() => x <= n + 1 - k + path.size()
+        for(int i = startIndex; i <= n + 1 - k + path.size(); ++i)
+        {
+            path.push_back(i);
+            backtracking(n, k, i + 1);
+            path.pop_back();
+        }
+    }
+
+    vector<vector<int>> combine(int n, int k)
+    {
+        backtracking(n, k, 1);
+
+        return res;
+    }
+
+private:
+    vector<vector<int>> res;
+    vector<int> path;
+};

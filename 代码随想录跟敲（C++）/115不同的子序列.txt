@@ -1,0 +1,35 @@
+//动态规划
+class Solution
+{
+public:
+    int numDistinct(string s, string t)
+    {
+        int ssz = s.size(), tsz = t.size();
+        //dp[i][j]:s的子序列(以s[i-1]为结尾) 中 j的子序列(以t[j-1]为结尾) 的个数
+        vector<vector<uint64_t>> dp(ssz + 1, vector<uint64_t>(tsz + 1));
+
+        //要包含为空串的t，s只能删除所有元素直到空串，一种情况
+        for(int i = 0; i <= ssz; ++i) dp[i][0] = 1;
+
+        //要包含为空串的s，t不为空串时，不可能包含s
+        for(int j = 1; j <= tsz; ++j) dp[0][j] = 0;
+
+        for(int i = 1; i <= ssz; ++i)
+            for(int j = 1; j <= tsz; ++j)
+                //s:b  a  g1 g2 g3    t:b  a  g
+                //  0  1  2  3  4       0  1  2
+                //dp[3][2]:bag1g2g3中bag的个数
+                //1.s[i - 1] == t[j - 1](g3 == g)
+                //1a.s不使用g3，t不使用g(用b~g2来匹配ba)    dp[2][1]:bag1g2   匹配 ba
+                //1b.s使用g3(用b~g2来匹配bag)     dp[2][2]:bag1g2g3 匹配 bag
+                if(s[i - 1] == t[j - 1]) dp[i][j] = dp[i - 1][j - 1] + dp[i - 1][j];
+                //s:b  a  g1 g2 f    t:b  a  g
+                //  0  1  2  3  4       0  1  2
+                //dp[3][2]:bag1g2f中bag的个数
+                //2.s[i - 1] == t[j - 1](f != g)
+                //2a.s不使用f(用b~g2来匹配bag)    dp[2][2]:bag1g2   匹配 bag
+                else dp[i][j] = dp[i - 1][j];
+        
+        return dp[ssz][tsz];
+    }
+};

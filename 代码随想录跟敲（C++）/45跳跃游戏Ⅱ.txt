@@ -1,0 +1,32 @@
+//正向查找可到达的最大位置
+class Solution 
+{
+public:
+    int jump(vector<int>& nums) 
+    {
+        //本次跳跃的最远位置
+        int cur_rightMost = 0;
+        //下次跳跃的最远位置
+        int next_rightMost = 0;
+        //最小跳跃次数
+        int step = 0;
+        //题目生成的测试用例可以到达nums[n - 1]
+        //即最多nums.size() - 1次可跳到nums[n - 1]（一步一步的跳）
+        for(int i = 0; i < nums.size() - 1; ++i)
+        {
+            next_rightMost = max(next_rightMost, nums[i] + i);
+            //到达当前起跳点区域内能跳跃的位置的最远点
+            //可以开始计算下一个起跳点区域内能跳跃的位置的最远点
+            //当移动下标指向nums.size() - 2时
+            //如果i == cur_rightMost，需要再走一步(题目假设必能跳到nums.size() - 1)
+            //如果i != cur_rightMost，说明当前覆盖最远距离就可以直接达到终点了，不需要再走⼀步
+            if(i == cur_rightMost)
+            {
+                cur_rightMost = next_rightMost;
+                ++step;
+            }
+        }
+
+        return step;
+    }
+};

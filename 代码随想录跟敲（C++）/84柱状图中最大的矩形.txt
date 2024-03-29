@@ -1,0 +1,34 @@
+//单调栈 + 常数优化
+class Solution
+{
+public:
+    int largestRectangleArea(vector<int>& heights)
+    {
+        stack<int> stk;
+        int res = 0;
+        //加上后才能计算最右边柱子的面积
+        heights.insert(heights.begin(), 0);
+        //加上后才能计算最左边柱子的面积
+        heights.insert(heights.end(), 0);
+
+        for(int i = 0; i < heights.size(); ++i)
+        {
+            while(!stk.empty() && heights[i] < heights[stk.top()])
+            {
+                int mid = stk.top();
+                stk.pop();
+
+                if(!stk.empty())
+                {
+                    int curHeight = heights[mid];
+                    int curWeight = i - stk.top() - 1;
+                    res = max(res, curHeight * curWeight);
+                }
+            }
+
+            stk.push(i);
+        }
+
+        return res;
+    }
+};

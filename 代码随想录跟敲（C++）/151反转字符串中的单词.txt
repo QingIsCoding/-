@@ -1,0 +1,39 @@
+//自行编写对应的函数
+class Solution 
+{
+public:
+    void removeExtraSpaces(string& s)
+    {
+        int slow = 0;
+
+        for(int fast = 0; fast < s.size(); ++fast)
+        {
+            if(s[fast] != ' ')
+            {
+                if(slow != 0) s[slow++] = ' ';
+
+                while(fast < s.size() && s[fast] != ' ') s[slow++] = s[fast++];
+            }
+        }
+
+        s.resize(slow);
+    }
+
+    string reverseWords(string s) 
+    {
+        removeExtraSpaces(s);
+        reverse(s.begin(), s.end());
+        int left = 0;
+
+        for(int right = 0; right <= s.size(); ++right)
+        {
+            if(right == s.size() || s[right] == ' ')
+            {
+                reverse(s.begin() + left, s.begin() + right);
+                left = right + 1;
+            }
+        }
+
+        return s;
+    }
+};

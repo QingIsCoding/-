@@ -1,0 +1,18 @@
+//一次遍历
+class Solution 
+{
+public:
+    int maxProfit(vector<int>& prices) 
+    {
+        int leftMin = INT_MAX;
+        int res = 0;
+
+        for(int price : prices)
+        {
+            leftMin = min(leftMin, price);
+            res = max(res, price - leftMin);
+        }
+        
+        return res;
+    }
+};

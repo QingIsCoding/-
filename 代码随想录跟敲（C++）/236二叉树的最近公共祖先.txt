@@ -1,0 +1,32 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+//递归
+class Solution
+{
+public:
+    TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q)
+    {
+        //特殊情况:节点本身p(q)有一个子孙节点q(p)
+        //只找到节点本身p(q)就返回，此时在后面不会找到子孙节点q(p)
+        //遍历到根节点时左右节点一定时一个为空，一个不为空
+        //这时一定说明不为空节点下面还有一个节点
+        //按照中间节点的处理逻辑，此时返回不为空的节点本身p(q)
+        if(root == nullptr || root == p || root == q) return root;
+
+        TreeNode* left = lowestCommonAncestor(root->left, p, q);
+        TreeNode* right = lowestCommonAncestor(root->right, p, q);
+
+        if(left != nullptr && right == nullptr) return left;
+        else if(left == nullptr && right != nullptr) return right;
+        else if(left != nullptr && right != nullptr) return root;
+        //left == nullptr && right == nullptr
+        else return nullptr;
+    }
+};

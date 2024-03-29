@@ -1,0 +1,61 @@
+/*
+// Definition for a Node.
+class Node {
+public:
+    int val;
+    Node* left;
+    Node* right;
+    Node* next;
+
+    Node() : val(0), left(NULL), right(NULL), next(NULL) {}
+
+    Node(int _val) : val(_val), left(NULL), right(NULL), next(NULL) {}
+
+    Node(int _val, Node* _left, Node* _right, Node* _next)
+        : val(_val), left(_left), right(_right), next(_next) {}
+};
+*/
+//层次遍历
+class Solution
+{
+public:
+    Node* connect(Node* root)
+    {
+        if(root == nullptr) return root;
+
+        queue<Node*> que;
+        que.push(root);
+
+        while(!que.empty())
+        {
+            int currentLevelSize = que.size();
+            Node* pre;
+            Node* cur;
+
+            for(int i = 0; i < currentLevelSize; ++i)
+            {
+                cur = que.front();
+                que.pop();
+
+                //每层刚开始时，pre指向开头节点
+                if(i == 0) pre = cur;
+                //上一次的pre指向这一次的cur
+                //pre再向后走，准备指向下一次的cur
+                else
+                {
+                    pre->next = cur;
+                    pre = cur;//pre = pre->next;
+                }
+
+                if(cur->left != nullptr) que.push(cur->left);
+                if(cur->right != nullptr) que.push(cur->right);
+            }
+
+            //每层结束时，pre和cur都指向该层最后一个节点
+            //cur->next = nullptr;
+            pre->next = nullptr;
+        }
+
+        return root;
+    }
+};

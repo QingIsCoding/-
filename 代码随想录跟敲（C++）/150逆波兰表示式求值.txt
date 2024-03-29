@@ -1,0 +1,28 @@
+//栈
+class Solution 
+{
+public:
+    int evalRPN(vector<string>& tokens) 
+    {
+        stack<int> stk;
+
+        for(auto token : tokens)
+        {
+            if(token == "+" || token == "-" || token == "*" || token == "/")
+            {
+                int num1 = stk.top();
+                stk.pop();
+                int num2 = stk.top();
+                stk.pop();
+
+                if(token == "+") stk.push(num2 + num1);
+                if(token == "-") stk.push(num2 - num1);
+                if(token == "*") stk.push(num2 * num1);
+                if(token == "/") stk.push(num2 / num1);    
+            }
+            else stk.push(stoi(token));
+        }
+
+        return stk.top();
+    }
+};

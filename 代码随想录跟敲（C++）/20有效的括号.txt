@@ -1,0 +1,34 @@
+//栈
+class Solution 
+{
+public:
+    bool isValid(string s) 
+    {
+        //1.左括号必须用相同类型的右括号闭合<->1.多了左括号
+        //2.左括号必须以正确的顺序闭合<->2.左右括号不匹配
+        //3.每个右括号都有一个对应的相同类型的左括号<->3.多了右括号  
+        //4.全部匹配成功
+        if(s.size() % 2 == 1) return false;
+
+        stack<char> stk;
+
+        for(char ch : s)
+        {
+            //三种左括号的情况，存放为对应的右括号入栈
+            if(ch == '(') stk.push(')');
+            else if(ch == '[') stk.push(']');
+            else if(ch == '{') stk.push('}');
+            //准备寻找对应的右括号来配对已入栈的左括号(存放为右括号)
+            //3.多了右括号(没找到对应的左括号)
+            else if(stk.empty()) return false;
+            //2.左右括号不匹配
+            else if(ch != stk.top()) return false;
+            //此右括号匹配成功
+            else if(ch == stk.top()) stk.pop();
+        }
+
+        //stk.empty() == 0则1.多了左括号
+        //stk.empty() == 1则4.全部匹配成功
+        return stk.empty();
+    }
+};

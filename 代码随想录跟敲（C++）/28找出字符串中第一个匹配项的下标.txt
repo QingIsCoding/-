@@ -1,0 +1,63 @@
+//Knuth-Morris-Pratt 算法
+class Solution 
+{
+public:
+    vector<int> getNext(string needle)
+    {
+        if(needle.size() == 1) return {-1};
+
+        vector<int> next(needle.size());
+        //退无可退，特殊标记为-1
+        next[0] = -1;
+        //前缀不包含尾字符，后缀不包含首字符
+        //下标为1的位置，前面只有一个字符(下标为0)，没有前后缀
+        next[1] = 0;
+        //准备计算从下标为2开始的next数组的值
+        int i = 2;
+        //cn:下标为i-1的字符与下标为cn的字符进行比较
+        int cn = 0;
+
+        while(i < next.size())
+        {
+            //比较needle[i - 1] == needle[cn]成功，更新next[i] = cn + 1(++cn)
+            //下次要比较新的needle[i - 1] == needle[cn]?
+            //i++，++cn后，比较needle[i - 1] == needle[cn]就是比较needle[i] == needle[cn + 1]
+            if(needle[i - 1] == needle[cn]) next[i++] = ++cn;
+            //比较needle[i - 1] == needle[cn]失败
+            //尝试比较needle[i - 1] == needle[next[cn]]
+            else if(cn > 0) cn = next[cn];
+            //退无可退，next[i] = 0
+            else next[i++] = 0;
+        }
+
+        return next;
+    }
+
+    //haystack:文本串 needle:模式串
+    int strStr(string haystack, string needle) 
+    {
+        if(haystack.size() < needle.size()) return -1;
+
+        //i1:haystack中比较的位置
+        //i2:needle中比较的位置
+        int i1 = 0, i2 = 0;
+        vector<int> next = getNext(needle);
+
+        while(i1 < haystack.size() && i2 < needle.size())
+        {
+            //两串的当前位置比较成功，准备比较两串的下一位置
+            if(haystack[i1] == needle[i2])
+            {
+                i1++;
+                i2++;
+            }
+            //模式串退无可退，文本串移到下个位置继续比较
+            else if(next[i2] == -1) i1++;
+            //用保存了最长公共前后缀信息的next数组来加速匹配
+            else i2 = next[i2];
+        }
+
+        //i2遍历完则模式串匹配成功
+        return i2 == needle.size() ? i1 - i2 : -1;
+    }
+};

@@ -1,0 +1,85 @@
+//动态规划
+/*
+class Solution 
+{
+public:
+    int climbStairs(int n) 
+    {
+        //f(n) = f(n - 2) + f(n - 1)
+        // r   =    p     +    q
+        int p = 0, q = 0, r = 1;
+
+        for(int i = 1; i <= n; ++i)
+        {
+            p = q;
+            q = r;
+            r = p + q;
+        }
+
+        return r;
+    }
+};
+*/
+//矩阵快速幂
+/*
+class Solution 
+{
+public:
+    vector<vector<long long>> multiply(vector<vector<long long>> &a, vector<vector<long long>> &b)
+    {
+        //c(2, vector<long long>(2))定义2个vector<long long>(2)来初始化
+        //vector<long long>(2)定义2个0来初始化
+        //相当于定义c为2*2阶的0矩阵
+        vector<vector<long long>> c(2, vector<long long>(2));
+
+        for(int i = 0; i < 2; ++i)
+            for(int j = 0; j < 2; ++j)
+                c[i][j] = a[i][0] * b[0][j] + a[i][1] * b[1][j];
+        
+        return c;
+    }
+
+    vector<vector<long long>> matrixPow(vector<vector<long long>> a, int n)
+    {
+        //a_n来表示a^n
+        vector<vector<long long>> a_n = {{1, 0}, {0, 1}};
+
+        while(n > 0)
+        {
+            if((n & 1) == 1) a_n = multiply(a_n, a);
+
+            a = multiply(a, a);
+            n >>= 1;
+        }
+
+        return a_n;
+    }
+
+    int climbStairs(int n) 
+    {
+        vector<vector<long long>> a = {{1, 1}, {1, 0}};
+        vector<vector<long long>> ans = matrixPow(a, n);
+
+        return ans[0][0];
+    }
+};
+*/
+//通项公式
+class Solution 
+{
+public:
+    int climbStairs(int n) 
+    {   
+        //f(n)=[(5+√5)/10]*[(1+√5)/2]^n+[(5-√5)/10]*[(1-√5)/2]^n
+        //f(1) = 1, f(2) = 2        
+        double fibn = ((5 + sqrt(5)) / 10) * pow((1 + sqrt(5)) / 2, n) + ((5 - sqrt(5)) / 10) * pow((1 - sqrt(5)) / 2, n);
+
+        //double 8字节，int 4字节，double强转int会丢失精度
+        //round()函数返回最接近参数的整数值
+        //int(0.9999999999)是0
+        //round(0.9999999999)是0
+        fibn = round(fibn);    
+
+        return fibn;
+    }
+};

@@ -1,0 +1,58 @@
+//双栈
+class MyQueue 
+{
+public:
+    MyQueue() 
+    {
+
+    }
+    
+    void push(int x) 
+    {
+        inStack.push(x);
+    }
+    
+    int pop() 
+    {
+        //MyQueue与inStack出队方向相反
+        //MyQueue与outStack出队方向相同
+        //outStack(相同出队方向)为空时，此时原队头元素(相同出队方向)已全部出队
+        //才将inStack(相反出队方向)中的元素全部放入outStack(相同出队方向)
+        if(outStack.empty())
+            while(!inStack.empty())
+            {
+                outStack.push(inStack.top());
+                inStack.pop();
+            }
+
+        int result = outStack.top();
+        outStack.pop();
+
+        return result;
+    }
+    
+    int peek() 
+    {
+        int result = pop();
+        outStack.push(result);
+
+        return result;
+    }
+    
+    bool empty() 
+    {
+        return inStack.empty() && outStack.empty();
+    }
+
+private:
+    stack<int> inStack, outStack;
+};
+
+/**
+ * Your MyQueue object will be instantiated and called as such:
+ * MyQueue* obj = new MyQueue();
+ * obj->push(x);
+ * int param_2 = obj->pop();
+ * int param_3 = obj->peek();
+ * bool param_4 = obj->empty();
+ */

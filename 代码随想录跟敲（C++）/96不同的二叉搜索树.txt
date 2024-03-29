@@ -1,0 +1,38 @@
+//动态规划
+/*
+class Solution 
+{
+public:
+    int numTrees(int n) 
+    {
+        vector<int> dp(n + 1);
+        dp[0] = 1;
+
+        for(int i = 1; i <= n ; ++i)
+            for(int j = 1; j <= i; ++j)
+                //i个数排序后，对于第j大的数来说
+                //有j - 1个比第j大的数小
+                //有i - j个比第j大的数大
+                dp[i] += dp[j - 1] * dp[i - j];
+        
+        return dp[n];
+    }
+};
+*/
+//数学
+class Solution 
+{
+public:
+    int numTrees(int n) 
+    {
+        long long C = 1;
+
+        //C *= 2 * (2 * i + 1) / (i + 2)错误
+        //i = 1时，C = 2
+        //i = 2时，2 * (2 * i + 1) / (i + 2) = 2 * 5 / 4 = 2(2.5自动取整为2)
+        //C *= 2 => C = C * 2 = 2 * 2 = 4(不等于5)
+        for(int i = 0; i < n; ++i) C = C * 2 * (2 * i + 1) / (i + 2);
+
+        return (int)C;
+    }
+};

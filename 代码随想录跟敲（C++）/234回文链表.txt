@@ -1,0 +1,140 @@
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+ //将值复制到数组中后用双指针法
+ /*
+class Solution 
+{
+public:
+    bool isPalindrome(ListNode* head) 
+    {
+        vector<int> vals;
+
+        while(head != nullptr)
+        {
+            vals.emplace_back(head->val);
+            head = head->next;
+        }
+
+        for(int i = 0, j = vals.size() - 1; i < j; ++i, --j)
+        {
+            if(vals[i] != vals[j]) return false;
+        }
+
+        return true;
+    }
+};
+*/
+//递归
+/*
+class Solution 
+{
+public:
+//5      6      1       7       5
+//$0     $1     $2      $3      $5
+//check($null) return true
+//check($4)  if(!check(null)) = (if(!true))                              无return
+//           if(currentNode->val != frontPointer->val)  =  if(5 != 5)    无return 
+//                                                                       return faslse;
+//check($3)  if(!check(4)) = (if(!true))                                 无return
+//           if(currentNode->val != frontPointer->val)  =  if(6 != 7)    return faslse;
+//check($2)  if(!check(3)) = (if(!false)) = if(true)                     return false;
+//check($1)  if(!check(2)) = (if(!false)) = if(true)                     return false;
+//check($0)  if(!check(1)) = (if(!false)) = if(true)                     return false;
+    bool recursivelyCheck(ListNode* currentNode)
+    {
+        if(currentNode != nullptr)
+        {
+            if(!recursivelyCheck(currentNode->next))  return false;
+            if(currentNode->val != frontPointer->val) return false;
+            frontPointer = frontPointer->next;
+        }
+        return true;
+    }
+    
+    bool isPalindrome(ListNode* head) 
+    {
+        frontPointer = head;
+        return recursivelyCheck(head);
+    }
+
+private:
+    ListNode* frontPointer;
+};
+*/
+//快慢指针
+class Solution 
+{
+public:
+    bool isPalindrome(ListNode* head)
+    {
+        {
+            if(head == nullptr) return true;
+        }
+
+        ListNode* firstHalfEnd = endOfFirstHalf(head);
+        ListNode* secondHalfStart = reverseList(firstHalfEnd->next);
+
+        ListNode* p1 = head;
+        ListNode* p2 = secondHalfStart;
+        bool result = true;
+
+        while(result && p2 != nullptr)
+        {
+            if(p1->val != p2->val)
+            {
+                result = false;
+            }
+
+            p1 = p1->next;
+            p2 = p2->next;
+        }
+
+        firstHalfEnd->next = reverseList(secondHalfStart);
+
+        return result;
+    }
+
+    ListNode* endOfFirstHalf(ListNode* head)
+    {
+        ListNode* fast = head;
+        ListNode* slow = head;
+
+        while(fast->next != nullptr && fast->next->next != nullptr)
+        {
+            //链表长为奇数，快指针移动到链表的末尾5时
+            //慢指针恰好到链表的中间3
+            //12345 -> fast=5, slow=3
+            //链表长为偶数，快指针移动到链表的末尾的前一个5时
+            //慢指针恰好到链表的中间3.5的前一个3
+            //123456 -> fast=5, slow=3
+            fast = fast->next->next;
+            slow = slow->next;
+        }
+
+        return slow;
+    }
+
+    ListNode* reverseList(ListNode* head)
+    {
+        ListNode* prev = nullptr;
+        ListNode* curr = head;
+
+        while(curr != nullptr)
+        {
+            ListNode* nextTemp = curr->next;
+            curr->next = prev;
+            prev = curr;
+            curr = nextTemp;
+        }
+
+        return prev;
+    } 
+};

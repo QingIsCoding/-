@@ -1,0 +1,18 @@
+//快速幂
+int quickPow(int a, int n)
+{
+    int ans = 1;
+    //7^10 =  7^8 * 7^2
+    //10 =   (1  0  1  0)2
+    while(n>0)
+    {
+        //如果n的当前末位为1，ans乘上当前的a
+        if(n&1>0) ans *= a;  
+        //a自乘  
+        a *= a;
+        //n往右移一位，准备开始下次判断
+        n >>= 1;       
+    }
+    
+    return ans;
+}

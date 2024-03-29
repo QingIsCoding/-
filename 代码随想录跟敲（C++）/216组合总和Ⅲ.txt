@@ -1,0 +1,41 @@
+//组合枚举
+class Solution
+{
+public:
+    void backtracking(int k, int n, int startIndex, int curSum)
+    {
+        if(curSum > n) return;
+
+        if(path.size() == k)
+        {
+            if(curSum == n) res.push_back(path);
+
+            //path.size() == k && curSum != n
+            return;
+        }
+
+        //path中已有path.size()个数
+        //path还需k - path.size()个数来填满
+        //[x, 9]的数组长度9 - x + 1至少要大于等于k - path.size()才有继续遍历的必要
+        //9 - x + 1 >= k - path.size() => x <= 10 - k + path.size()
+        for(int i = startIndex; i <= 10 - k + path.size(); ++i)
+        {
+            curSum += i;
+            path.push_back(i);
+            backtracking(k, n, i + 1, curSum);
+            path.pop_back();
+            curSum -= i;
+        }
+    }
+
+    vector<vector<int>> combinationSum3(int k, int n)
+    {
+        backtracking(k, n, 1, 0);
+
+        return res;
+    }
+
+private:
+    vector<vector<int>> res;
+    vector<int> path;
+};
