@@ -1,0 +1,35 @@
+class Solution
+{
+public:
+    vector<int> getNext(string needle)
+    {
+        if(needle.size() == 1) return {-1};
+
+        vector<int> next(needle.size());
+        next[0] = -1;
+        next[1] = 0;
+        int i = 2, num = 0;
+
+        while(i < next.size())
+        {
+            if(needle[num] == needle[i - 1]) next[i++] = ++num;
+            else if(num > 0) num = next[num];
+            else next[i++] = 0;
+        }
+
+        return next;
+    }
+
+    bool repeatedSubstringPattern(string s)
+    {
+        if(s.size() == 1) return false;
+
+        vector<int> next = getNext(s);
+        int LSPS;
+
+        if(s[next[s.size() - 1]] == s[s.size() - 1]) LSPS = next[s.size() - 1] + 1;
+        else LSPS = 0;
+
+        return LSPS != 0 && s.size() % (s.size() - LSPS) == 0;
+    }
+};

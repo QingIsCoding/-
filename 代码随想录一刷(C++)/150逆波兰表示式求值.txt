@@ -1,0 +1,30 @@
+class Solution
+{
+public:
+    int evalRPN(vector<string>& tokens)
+    {
+        int num1, num2;
+
+        for(auto token : tokens)
+        {
+            if(token == "+" || token == "-" || token == "*" || token == "/")
+            {
+                num1 = stk.top();
+                stk.pop();
+                num2 = stk.top();
+                stk.pop();
+
+                if(token == "+") stk.push(num2 + num1);
+                else if(token == "-") stk.push(num2 - num1);
+                else if(token == "*") stk.push(num2 * num1);
+                else if(token == "/") stk.push(num2 / num1);
+            }
+            else stk.push(stoi(token));
+        }
+
+        return stk.top();
+    }
+
+private:
+    stack<int> stk;
+};

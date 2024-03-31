@@ -1,0 +1,17 @@
+class Solution
+{
+public:
+    bool canConstruct(string ransomNote, string magazine)
+    {
+        int record[26];
+        
+        for(auto ch : magazine) ++record[ch - 'a'];
+
+        for(auto ch : ransomNote) --record[ch - 'a'];
+
+        for(auto num : record)
+            if(num < 0) return false;
+
+        return true;
+    }
+};

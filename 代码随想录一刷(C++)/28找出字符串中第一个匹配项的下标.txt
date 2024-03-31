@@ -1,0 +1,41 @@
+class Solution
+{
+public:
+    vector<int> getNext(string needle)
+    {
+        if(needle.size() == 1) return {-1};
+
+        vector<int> next(needle.size());
+        next[0] = -1;
+        next[1] = 0;
+        int i = 2, num = 0;
+
+        while(i < next.size())
+        {
+            if(needle[num] == needle[i - 1]) next[i++] = ++num;
+            else if(num > 0) num = next[num];
+            else next[i++] = 0;
+        }
+
+        return next;
+    }
+
+    int strStr(string haystack, string needle)
+    {
+        int i = 0, j = 0;
+        vector<int> next = getNext(needle);
+
+        while(i < haystack.size() && j < needle.size())
+        {
+            if(haystack[i] == needle[j])
+            {
+                ++i;
+                ++j;
+            }
+            else if(next[j] == -1) ++i;
+            else j = next[j];
+        }
+
+        return j == needle.size() ? i - j : -1;
+    }
+};

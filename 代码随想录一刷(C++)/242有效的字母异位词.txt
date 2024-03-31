@@ -1,0 +1,17 @@
+class Solution
+{
+public:
+    bool isAnagram(string s, string t)
+    {
+        int record[26];
+
+        for(auto ch : s) ++record[ch - 'a'];
+
+        for(auto ch : t) --record[ch - 'a'];
+
+        for(auto num : record)
+            if(num != 0) return false;
+        
+        return true;
+    }
+};

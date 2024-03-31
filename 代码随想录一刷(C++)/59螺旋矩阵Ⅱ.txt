@@ -1,0 +1,31 @@
+class Solution
+{
+public:
+    vector<vector<int>> generateMatrix(int n)
+    {
+        int startx = 0, starty = 0;
+        int offset = 1;
+        int num = 1;
+        int i, j;
+        int loop = n / 2;
+        vector<vector<int>> res(n, vector<int> (n));
+
+        while(loop--)
+        {
+            i = startx, j = starty;
+
+            for( ; j < n - offset; ++j) res[i][j] = num++;
+            for( ; i < n - offset; ++i) res[i][j] = num++;
+            for( ; j > starty; --j) res[i][j] = num++;
+            for( ; i > startx; --i) res[i][j] = num++;
+
+            ++startx;
+            ++starty;
+            ++offset;
+        }
+        
+        if(n % 2) res[n / 2][n / 2] = num;
+
+        return res;
+    }
+};

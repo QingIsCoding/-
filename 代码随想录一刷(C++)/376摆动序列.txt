@@ -1,0 +1,29 @@
+class Solution
+{
+public:
+    int wiggleMaxLength(vector<int>& nums)
+    {
+        int res = 1;
+        //1:递增 2:递减
+        int preState = 0;
+
+        for(int i = 1; i < nums.size(); ++i)
+        {
+            if(nums[i] > nums[i - 1])
+            {
+                if(preState != 1) ++res;
+
+                preState = 1;
+            }
+            else if(nums[i] < nums[i - 1])
+            {
+                if(preState != 2) ++res;
+
+                preState = 2;
+            }
+            else continue;
+        }
+
+        return res;
+    }
+};

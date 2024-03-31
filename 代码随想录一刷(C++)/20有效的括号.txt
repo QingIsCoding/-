@@ -1,0 +1,21 @@
+class Solution
+{
+public:
+    bool isValid(string s)
+    {
+        for(auto ch : s)
+        {
+            if(ch == '(') stk.push(')');
+            else if(ch == '[') stk.push(']');
+            else if(ch == '{') stk.push('}');
+            else if(stk.empty()) return false;
+            else if(ch != stk.top()) return false;
+            else if(ch == stk.top()) stk.pop();
+        }
+
+        return stk.empty();
+    }
+
+private:
+    stack<char> stk;
+};

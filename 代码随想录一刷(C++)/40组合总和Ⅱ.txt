@@ -1,0 +1,41 @@
+class Solution
+{
+public:
+    void backtracking(vector<int>& candidates, int target, int startIndex, int curSum, vector<bool>& used)
+    {
+        if(curSum > target) return;
+
+        if(curSum == target)
+        {
+            res.push_back(path);
+
+            return;
+        }
+
+        for(int i = startIndex; i < candidates.size(); ++i)
+        {
+            if(i > 0 && candidates[i] == candidates[i - 1] && used[i - 1] == false) continue;
+
+            path.push_back(candidates[i]);
+            curSum += candidates[i];
+            used[i] = true;
+            backtracking(candidates, target, i + 1, curSum, used);
+            used[i] = false;
+            curSum -= candidates[i];
+            path.pop_back();
+        }
+    }
+
+    vector<vector<int>> combinationSum2(vector<int>& candidates, int target)
+    {
+        vector<bool> used(candidates.size(), false);
+        sort(candidates.begin(), candidates.end());
+        backtracking(candidates, target, 0, 0, used);
+
+        return res;
+    }
+
+private:
+    vector<vector<int>> res;
+    vector<int> path;
+};
