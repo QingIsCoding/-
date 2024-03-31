@@ -1,0 +1,34 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution
+{
+public:
+    vector<int> robTree(TreeNode* cur)
+    {
+        //0:不偷    1:偷
+        if(cur == nullptr) return {0, 0};
+
+        vector<int> leftMax = robTree(cur->left);
+        vector<int> rightMax = robTree(cur->right);
+        int val0 = max(leftMax[0], leftMax[1]) + max(rightMax[0], rightMax[1]);
+        int val1 = leftMax[0] + rightMax[0] + cur->val;
+
+        return {val0, val1};
+    }
+
+    int rob(TreeNode* root)
+    {
+        vector<int> res = robTree(root);
+        
+        return max(res[0], res[1]);
+    }
+};

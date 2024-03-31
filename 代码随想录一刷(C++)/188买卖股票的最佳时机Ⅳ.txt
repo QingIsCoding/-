@@ -1,0 +1,23 @@
+class Solution
+{
+public:
+    int maxProfit(int k, vector<int>& prices)
+    {
+        //dp[i][0]:不操作
+        //dp[i][j](j为正奇数):第(j + 1) / 2次持有股票
+        //dp[i][j](j为正偶数):第j / 2次不持有股票
+        int sz = prices.size(), m = 2 * k;
+        vector<vector<int>> dp(sz, vector<int>(m + 1));
+
+        for(int j = 1; j < m; j += 2)  dp[0][j] = -prices[0];
+
+        for(int i = 1; i < sz; ++i)
+            for(int j = 0; j < m; j += 2)
+            {
+                dp[i][j + 1] = max(dp[i - 1][j + 1], dp[i - 1][j] - prices[i]);
+                dp[i][j + 2] = max(dp[i - 1][j + 2], dp[i - 1][j + 1] + prices[i]);
+            }
+        
+        return dp[sz - 1][m];
+    }
+};

@@ -1,0 +1,29 @@
+class Solution
+{
+public:
+    int trap(vector<int>& height)
+    {
+        int sz = height.size(), res = 0;
+        stack<int> stk;
+
+        for(int i = 0; i < sz; ++i)
+        {
+            while(!stk.empty() && height[i] > height[stk.top()])
+            {
+                int mid = stk.top();
+                stk.pop();
+
+                if(!stk.empty())
+                {
+                    int curWeight = i - stk.top() - 1;
+                    int curHeight = min(height[stk.top()], height[i]) - height[mid];
+                    res += curWeight * curHeight;
+                }
+            }
+
+            stk.push(i);
+        }
+
+        return res;
+    }
+};

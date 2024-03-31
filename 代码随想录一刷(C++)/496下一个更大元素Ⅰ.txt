@@ -1,0 +1,27 @@
+class Solution
+{
+public:
+    vector<int> nextGreaterElement(vector<int>& nums1, vector<int>& nums2)
+    {
+        int sz1 = nums1.size(), sz2 = nums2.size();
+        vector<int> res(sz1, -1);
+        stack<int> stk;
+        unordered_map<int, int> umap;
+
+        for(int i = 0; i < sz1; ++i) umap[nums1[i]] = i;
+
+        for(int i = 0; i < sz2; ++i)
+        {
+            while(!stk.empty() && nums2[i] > nums2[stk.top()])
+            {
+                if(umap.count(nums2[stk.top()])) res[umap[nums2[stk.top()]]] = nums2[i];
+
+                stk.pop();
+            }
+
+            stk.push(i);
+        }
+
+        return res;
+    }
+};
