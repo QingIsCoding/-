@@ -1,0 +1,26 @@
+func largestSumAfterKNegations(nums []int, k int) int {
+    abs := func(a int) int {
+        if a >= 0 {
+            return a
+        } else {
+            return -a
+        }
+    }
+    sort.Slice(nums, func(i, j int) bool {
+        return abs(nums[i]) > abs(nums[j])
+    })
+    for i := 0; i < len(nums); i++ {
+        if nums[i] < 0 && k > 0 {
+            nums[i] *= -1
+            k--
+        }
+    }
+    if k % 2 == 1 {
+        nums[len(nums)-1] *= -1
+    }
+    ans := 0
+    for _, num := range nums {
+        ans += num
+    }
+    return ans
+}

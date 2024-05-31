@@ -1,0 +1,12 @@
+func jump(nums []int) int {
+    ans := 0
+    curRightMax, nextRightMax := 0, 0
+    for  i := 0; i < len(nums)-1; i++ {
+        nextRightMax = max(nextRightMax, i + nums[i])
+        if i == curRightMax {
+            curRightMax = nextRightMax
+            ans++
+        }
+    }
+    return ans
+}

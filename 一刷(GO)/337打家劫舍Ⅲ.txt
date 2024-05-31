@@ -1,0 +1,24 @@
+/**
+ * Definition for a binary tree node.
+ * type TreeNode struct {
+ *     Val int
+ *     Left *TreeNode
+ *     Right *TreeNode
+ * }
+ */
+func rob(root *TreeNode) int {
+    var robTree func(cur *TreeNode) []int
+    robTree = func(cur *TreeNode) []int {
+        //0:不偷    1:偷
+        if cur == nil {
+            return []int{0, 0}
+        }
+        leftMax := robTree(cur.Left)
+        rightMax := robTree(cur.Right)
+        val0 := max(leftMax[0], leftMax[1]) + max(rightMax[0], rightMax[1])
+        val1 := leftMax[0] + rightMax[0] + cur.Val
+        return []int{val0, val1}
+    }
+    ans := robTree(root)
+    return max(ans[0], ans[1])
+}

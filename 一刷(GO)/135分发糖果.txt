@@ -1,0 +1,21 @@
+func candy(ratings []int) int {
+	candyNums := make([]int, len(ratings))
+	for i := 0; i < len(candyNums); i++ {
+		candyNums[i] = 1
+	}
+	for i := 1; i <= len(ratings)-1; i++ {
+		if ratings[i] > ratings[i-1] {
+			candyNums[i] = candyNums[i-1] + 1
+		}
+	}
+	for i := len(ratings) - 1; i >= 1; i-- {
+        if ratings[i] < ratings[i-1] {
+            candyNums[i-1] = max(candyNums[i-1], candyNums[i] + 1)
+        }
+	}
+    ans := 0
+    for _, candyNum := range candyNums {
+        ans += candyNum
+    }
+    return ans
+}

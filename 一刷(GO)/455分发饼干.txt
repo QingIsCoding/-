@@ -1,0 +1,11 @@
+func findContentChildren(g []int, s []int) int {
+    ans := 0
+    sort.Ints(g)
+    sort.Ints(s)
+    for i := 0; i < len(s); i++ {
+        if ans < len(g) && s[i] >= g[ans] {
+            ans++
+        }
+    }
+    return ans
+}

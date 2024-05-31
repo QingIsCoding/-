@@ -1,0 +1,37 @@
+/**
+ * Definition for a binary tree node.
+ * type TreeNode struct {
+ *     Val int
+ *     Left *TreeNode
+ *     Right *TreeNode
+ * }
+ */
+func minCameraCover(root *TreeNode) int {
+    ans := 0
+    var traversal func(cur *TreeNode) int
+    traversal = func(cur *TreeNode) int {
+        //1:有摄像头+有监控
+        //2:无摄像头+有监控
+        //3:无摄像头+无监控
+        if cur == nil {
+            return 2
+        }
+        left := traversal(cur.Left)
+        right := traversal(cur.Right)
+        if left == 3 || right == 3 {
+            ans++
+            return 1
+        }
+        if left == 1 || right == 1 {
+            return 2
+        }
+        if left == 2 || right == 2 {
+            return 3
+        }
+        return -1
+    }
+    if traversal(root) == 3 {
+        ans++
+    }
+    return ans
+}

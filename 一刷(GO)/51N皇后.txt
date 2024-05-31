@@ -1,0 +1,47 @@
+func isValid(matrix []string, row, column, n int) bool {
+    for i := 0; i < row; i++ {
+        if matrix[i][column] == 'Q' {
+            return false
+        }
+    }
+    for i, j := row-1, column-1; i >= 0 && j >= 0; i, j = i-1, j-1 {
+        if matrix[i][j] == 'Q' {
+            return false
+        }
+    }
+    for i, j := row-1, column+1; i >= 0 && j <= n-1; i, j = i-1, j+1 {
+        if matrix[i][j] == 'Q' {
+            return false
+        }
+    }
+    return true
+}
+
+func solveNQueens(n int) [][]string {
+    var ans [][]string
+    matrix := make([]string, n)
+    for i := range matrix {
+        matrix[i] = strings.Repeat(".", n)
+    }
+    var backtracking func(matrix []string, row, n int)
+    backtracking = func(matrix []string, row, n int) {
+        if row == n {
+            temp := make([]string, len(matrix))
+            copy(temp, matrix)
+            ans = append(ans, temp)
+            return
+        }
+        for column := 0; column < n; column++ {
+            if isValid(matrix, row, column, n) {
+                temp := []byte(matrix[row])
+                temp[column] = 'Q'
+                matrix[row] = string(temp)
+                backtracking(matrix, row+1, n)
+                temp[column] = '.'
+                matrix[row] = string(temp)
+            }
+        }
+    }
+    backtracking(matrix, 0, n)
+    return ans
+}

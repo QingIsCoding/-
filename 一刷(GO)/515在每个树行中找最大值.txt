@@ -1,0 +1,32 @@
+/**
+ * Definition for a binary tree node.
+ * type TreeNode struct {
+ *     Val int
+ *     Left *TreeNode
+ *     Right *TreeNode
+ * }
+ */
+func largestValues(root *TreeNode) []int {
+    ans := make([]int, 0)
+    if root == nil {
+        return ans
+    }
+    queue := []*TreeNode{root}
+    for len(queue) != 0 {
+        currentLevelSize := len(queue)
+        layerMax := math.MinInt32
+        for i := 0; i < currentLevelSize; i++ {
+            node := queue[0]
+            queue = queue[1:]
+            layerMax = max(layerMax, node.Val)
+            if node.Left != nil {
+                queue = append(queue, node.Left)
+            }
+            if node.Right != nil {
+                queue = append(queue, node.Right)
+            }
+        }
+        ans = append(ans, layerMax)
+    }
+    return ans
+}

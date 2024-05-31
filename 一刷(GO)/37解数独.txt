@@ -1,0 +1,45 @@
+func isValid(board [][]byte, row, column int, val byte) bool {
+    for i := 0; i < 9; i++ {
+        if board[i][column] == val {
+            return false
+        }
+    }
+    for j := 0; j < 9; j++ {
+        if board[row][j] == val {
+            return false
+        }
+    }
+    for i := row / 3 * 3; i < row / 3 * 3 + 3; i++ {
+        for j := column / 3 * 3; j < column / 3 * 3 + 3; j++ {
+            if board[i][j] == val {
+                return false
+            }
+        }
+    }
+    return true
+}
+
+func solveSudoku(board [][]byte) {
+    var backtracking func(board [][]byte) bool
+    backtracking = func(board [][]byte) bool {
+        for i := 0; i < 9; i++ {
+            for j:= 0; j < 9; j++ {
+                if board[i][j] != '.' {
+                    continue
+                }
+                for ch := '1'; ch <= '9'; ch++ {
+                    if isValid(board, i, j, byte(ch)) {
+                        board[i][j] = byte(ch);
+                        if backtracking(board) {
+                            return true
+                        }
+                        board[i][j] = '.'
+                    }
+                }
+                return false
+            }
+        }
+        return true
+    }
+    backtracking(board)
+}

@@ -1,0 +1,22 @@
+func isSubsequence(s string, t string) bool {
+    length_s, length_t := len(s), len(t)
+    //dp[i][j]:s[i-1]为结尾与以t[j-1]为结尾的最长重复子数组
+    dp := make([][]int, length_s + 1)
+    for i := range dp {
+        dp[i] = make([]int, length_t + 1)
+    }
+    for i := 1; i <= length_s; i++ {
+        for j := 1; j <= length_t; j++ {
+            if s[i-1] == t[j-1] {
+                dp[i][j] = dp[i-1][j-1] + 1
+            } else {
+                dp[i][j] = max(dp[i-1][j], dp[i][j-1])
+            }
+        }
+    }
+    if dp[length_s][length_t] == length_s {
+        return true
+    } else {
+        return false
+    }
+}

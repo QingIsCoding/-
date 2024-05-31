@@ -1,0 +1,18 @@
+func sortedSquares(nums []int) []int {
+    length := len(nums)
+    left, right, pos := 0, length - 1, length - 1
+    ans := make([]int, length)
+    for pos >= 0 {
+        l2 := nums[left] * nums[left]
+        r2 := nums[right] * nums[right]
+        if l2 > r2 {
+            ans[pos] = l2
+            left++
+        } else {
+            ans[pos] = r2
+            right--
+        }
+        pos--
+    }
+    return ans
+}

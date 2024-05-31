@@ -1,0 +1,21 @@
+func rob(nums []int) int {
+    length := len(nums)
+    if length == 1 {
+        return nums[0]
+    }
+    //[start, end)
+    var robRange func(nums []int, start, end int) int
+    robRange = func(nums []int, start, end int) int {
+        if end - start == 1 {
+            return nums[start]
+        }
+        dp := make([]int, length)
+        dp[start] = nums[start]
+        dp[start+1] = max(nums[start], nums[start+1])
+        for i := start + 2; i < end; i++ {
+            dp[i] = max(dp[i-1], dp[i-2] + nums[i])
+        }
+        return dp[end-1]
+    }
+    return max(robRange(nums, 0, length-1), robRange(nums, 1, length))
+}

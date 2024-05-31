@@ -1,0 +1,16 @@
+func partitionLabels(s string) []int {
+    hash := make([]int, 27)
+    left, right := 0, 0
+    var ans []int
+    for i := 0; i < len(s); i++ {
+        hash[s[i]-'a'] = i
+    }
+    for i := 0; i < len(s); i++ {
+        right = max(right, hash[s[i]-'a'])
+        if i == right {
+            ans = append(ans, right - left + 1)
+            left = i + 1
+        }
+    }
+    return ans
+}

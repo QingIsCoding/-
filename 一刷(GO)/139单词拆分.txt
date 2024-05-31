@@ -1,0 +1,19 @@
+func wordBreak(s string, wordDict []string) bool {
+    wordDictMap := make(map[string]bool)
+    for _, word := range wordDict {
+        wordDictMap[word] = true
+    }
+    //dp[i]:字符串长度为i的话，dp[i]为true，表示可以拆分为一个或多个在字典中出现的单词
+    dp := make([]bool, len(s) + 1)
+    dp[0] = true
+    for i := 1; i <= len(s); i++ {
+        for j := 0; j < i; j++ {
+            word := s[j:i]
+            if dp[j] && wordDictMap[word] {
+                dp[i] = true
+                break
+            }
+        }
+    }
+    return dp[len(s)]
+}
