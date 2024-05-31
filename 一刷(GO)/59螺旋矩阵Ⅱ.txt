@@ -1,0 +1,41 @@
+func generateMatrix(n int) [][]int {
+    startx, starty, offset, num := 0, 0, 1, 1
+    var i, j int
+    loop := n / 2
+    ans := make([][]int, n)
+    for i := range ans {
+        ans[i] = make([]int, n)
+    }
+    for loop > 0 {
+        i = startx
+        j = starty
+        for j < n - offset {
+            ans[i][j] = num
+            num++
+            j++
+        }
+        for i < n - offset {
+            ans[i][j] = num
+            num++
+            i++
+        }
+        for j > starty {
+            ans[i][j] = num
+            num++
+            j--
+        }
+        for i > startx {
+            ans[i][j] = num
+            num++
+            i--
+        }
+        startx++
+        starty++
+        offset++
+        loop--
+    }
+    if n & 1 != 0 {
+        ans[n / 2][n / 2] = num
+    }
+    return ans
+}

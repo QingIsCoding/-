@@ -1,0 +1,43 @@
+func isValid(s string, left, right int) bool {
+	if left > right {
+		return false
+	}
+	if s[left] == '0' && left != right {
+		return false
+	}
+	num, _ := strconv.Atoi(s[left : right+1])
+	if num > 255 {
+		return false
+	}
+	return true
+}
+
+func restoreIpAddresses(s string) []string {
+	var ans []string
+	var backtracking func(string, int, int)
+	backtracking = func(s string, startIndex, pointNum int) {
+		if pointNum == 3 {
+			if isValid(s, startIndex, len(s)-1) {
+				ans = append(ans, s)
+			}
+			return
+		}
+		for i := startIndex; i < len(s); i++ {
+			if isValid(s, startIndex, i) {
+				temp := s
+				s = s[:i+1] + "." + s[i+1:]
+				pointNum++
+				backtracking(s, i+2, pointNum)
+				s = temp
+				pointNum--
+			} else {
+				break
+			}
+		}
+	}
+	if len(s) < 4 || len(s) > 12 {
+		return ans
+	}
+	backtracking(s, 0, 0)
+	return ans
+}

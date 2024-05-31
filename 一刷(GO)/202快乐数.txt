@@ -1,0 +1,23 @@
+func getSum(n int) int {
+	sum := 0
+	for n > 0 {
+		sum += (n % 10) * (n % 10)
+		n /= 10
+	}
+	return sum
+}
+
+func isHappy(n int) bool {
+	boolMap := make(map[int]bool)
+	for {
+		k := getSum(n)
+		if k == 1 {
+			return true
+		}
+		if boolMap[k] == true {
+			return false
+		}
+		boolMap[k] = true
+		n = k
+	}
+}

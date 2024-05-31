@@ -1,0 +1,25 @@
+func maximalNetworkRank(n int, roads [][]int) int {
+	//与每座城市的相连的道路总数
+	degree := make([]int, n)
+	//两座城市是否相连
+	//0:不相连  1:相连
+	connect := make([][]int, n)
+	for i := range connect {
+		connect[i] = make([]int, n)
+	}
+	for _, road := range roads {
+		degree[road[0]]++
+		degree[road[1]]++
+		connect[road[0]][road[1]]++
+		connect[road[1]][road[0]]++
+	}
+	ans := 0
+	curNetworkRank := 0
+	for i := 0; i < n; i++ {
+		for j := i + 1; j < n; j++ {
+			curNetworkRank = degree[i] + degree[j] - connect[i][j]
+			ans = max(ans, curNetworkRank)
+		}
+	}
+	return ans
+}

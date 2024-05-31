@@ -1,0 +1,22 @@
+func answerQuerie(nums []int, query int) int {
+	sum := 0
+	count := 0
+	for _, num := range nums {
+		sum += num
+		if sum <= query {
+			count++
+		} else {
+			break
+		}
+	}
+	return count
+}
+
+func answerQueries(nums []int, queries []int) []int {
+	ans := make([]int, 0)
+	sort.Ints(nums)
+	for _, query := range queries {
+		ans = append(ans, answerQuerie(nums, query))
+	}
+	return ans
+}

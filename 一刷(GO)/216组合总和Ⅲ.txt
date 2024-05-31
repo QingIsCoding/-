@@ -1,0 +1,27 @@
+func combinationSum3(k int, n int) [][]int {
+	var ans [][]int
+	var path []int
+	var backtracking func(k, n, startIndex, curSum int)
+	backtracking = func(k, n, startIndex, curSum int) {
+		if curSum > n {
+			return
+		}
+		if len(path) == k {
+			if curSum == n {
+				temp := make([]int, k)
+				copy(temp, path)
+				ans = append(ans, temp)
+				return
+			}
+		}
+		for i := startIndex; i <= 10+len(path)-k; i++ {
+            curSum += i
+            path = append(path, i)
+            backtracking(k, n, i+1, curSum)
+            path = path[:len(path)-1]
+            curSum -= i
+		}
+	}
+    backtracking(k, n, 1, 0)
+    return ans
+}

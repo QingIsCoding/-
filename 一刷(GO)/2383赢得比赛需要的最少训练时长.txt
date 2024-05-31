@@ -1,0 +1,19 @@
+func minNumberOfHours(initialEnergy int, initialExperience int, energy []int, experience []int) int {
+	minExtraEnergy := 0
+	for _, v := range energy {
+		if initialEnergy <= v {
+			minExtraEnergy += v + 1 - initialEnergy
+			initialEnergy = v + 1
+		}
+		initialEnergy -= v
+	}
+	minExtraExperience := 0
+	for _, v := range experience {
+		if initialExperience <= v {
+			minExtraExperience += v + 1 - initialExperience
+			initialExperience = v + 1
+		}
+		initialExperience += v
+	}
+	return minExtraEnergy + minExtraExperience
+}

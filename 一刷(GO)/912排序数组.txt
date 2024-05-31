@@ -1,0 +1,36 @@
+func quickSort(q []int, l, r int) {
+	if l >= r {
+		return
+	}
+
+	x := q[(l + r) / 2]
+	i, j := l - 1, r + 1
+	for i < j {
+		for {
+			i++
+			//if q[i] >= x { ×
+			//1 2 (5) 3 4 5 5 6 7 8 9
+			//不能正确把(5)放到中间，起到隔离＜5的数和＞5的数的效果
+			if q[i] >= x {
+				break
+			}
+		}
+		for {
+			j--
+			if q[j] <= x {
+				break
+			}
+		}
+		if i < j {
+			q[i], q[j] = q[j], q[i]
+		}
+	}
+
+	quickSort(q, l, j)
+	quickSort(q, j + 1, r)
+}
+
+func sortArray(nums []int) []int {
+	quickSort(nums, 0, len(nums) - 1)
+	return nums
+}

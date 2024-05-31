@@ -1,0 +1,9 @@
+func pathEncryption(path string) string {
+    str := []byte(path)
+    for i, ch := range str {
+        if ch == '.' {
+            str[i] = ' '
+        }
+    }
+    return string(str)
+}

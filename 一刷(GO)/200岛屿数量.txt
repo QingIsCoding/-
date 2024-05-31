@@ -1,0 +1,32 @@
+func dfs(grid[][] byte, visited[][] bool, x, y int) {
+    if visited[x][y] || grid[x][y] == '0' {
+        return
+    }
+    visited[x][y] = true
+    direction := [][]int{{1, 0}, {0, 1}, {-1, 0}, {0, -1}}
+    for i := range direction {
+        nextx := x + direction[i][0]
+        nexty := y + direction[i][1]
+        if nextx < 0 || nextx >= len(grid) || nexty < 0 || nexty >= len(grid[0]) {
+            continue
+        }
+        dfs(grid, visited, nextx, nexty)
+    }
+}
+
+func numIslands(grid [][]byte) int {
+    ans := 0
+    visited := make([][]bool, len(grid))
+    for i := range visited {
+        visited[i] = make([]bool, len(grid[0]))
+    }
+    for i := range grid {
+        for j := range grid[i] {
+            if !visited[i][j] && grid[i][j] == '1' {
+                ans++
+                dfs(grid, visited, i, j)
+            }
+        }
+    }
+    return ans
+}

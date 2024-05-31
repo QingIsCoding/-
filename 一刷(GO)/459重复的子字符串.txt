@@ -1,0 +1,41 @@
+func getNext(needle string) []int {
+	szn := len(needle)
+	if szn == 1 {
+		return []int{-1}
+	}
+	next := make([]int, szn)
+	next[0], next[1] = -1, 0
+	i, cn := 2, 0
+	for i < szn {
+		if needle[i - 1] == needle[cn] {
+			cn++
+			next[i] = cn
+			i++
+		} else if cn > 0 {
+			cn = next[cn]
+		} else if cn == 0 {
+			next[i] = 0
+			i++
+		}
+	}
+	return next
+}
+
+func repeatedSubstringPattern(s string) bool {
+    sz := len(s)
+    if sz == 1 {
+        return false
+    }
+    next := getNext(s)
+    //next[i]代表字符串中下标为0~i-1的最长公共前后缀
+    //但s的最长公共前后缀还与字符串中下标为i的数有关
+    szc := 0
+    if s[next[sz - 1]] == s[sz - 1] {
+        c = next[sz - 1] + 1
+    }
+    //s:字符串
+    //q:不包含尾巴字符的前缀
+    //szc:q的最长公共前后缀
+    //s是周期串 等价于 len(s) 是 len(q)-len(c) 的倍数
+    return szc != 0 && sz % (sz - szc) == 0
+}

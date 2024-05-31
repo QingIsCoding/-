@@ -1,0 +1,27 @@
+func bestTeamScore(scores []int, ages []int) int {
+    n := len(scores)
+    //老大:球队中分数最高且年龄最大(否则会出现矛盾)
+    //dp[i]:以i为老大的队伍，得分的最大值
+    dp := make([]int, n)
+    ans := 0
+    people := make([][]int, n)
+    for i := range people {
+        people[i] = []int{scores[i], ages[i]}
+    }
+    sort.Slice(people, func(i, j int) bool {
+        return people[i][0] < people[j][0] || (people[i][0] == people[j][0] && people[i][1] < people[j][1])
+    })
+    //第i个人为队伍老大时的最大得分
+    for i := 0; i < n; i++ {
+        //第0~i-1个人分别为队伍老大时的最大得分
+        for j := 0; j < i; j++ {
+            if people[j][1] <= people[i][1] {
+                dp[i] = max(dp[i], dp[j])
+            }
+        }
+        //第i个人为队伍老大时的最大得分 = 第0~i-1个人分别为队伍老大时的最大得分 + 第i个人为队伍老大时的最大得分
+        dp[i] += people[i][0]
+        ans = max(ans, dp[i])
+    }
+    return ans
+}

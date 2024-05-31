@@ -1,0 +1,29 @@
+func search(nums []int, target int) int {
+	left, right := 0, len(nums)-1
+    //有 找左区间的右端点的二分法 和 找右区间的左端点的二分法
+    //哪边区间有序，就在哪边继续用二分法
+    for left <= right {
+        mid := left + (right - left) >> 1
+        if nums[mid] == target {
+            return mid
+        }
+        //在左区间有序，left可能与mid重合
+        if nums[left] <= nums[mid] {
+            //nums[left] <= target < nums[mid]
+            if nums[left] <= target && target < nums[mid] {
+                right = mid - 1
+            } else {
+                left = mid + 1
+            }
+        //在右区间有序，right可能与mid重合
+        } else if nums[right] >= nums[mid] {
+            //nums[mid] < target <= nums[right]
+            if nums[mid] < target && target <= nums[right] {
+                left = mid + 1
+            } else {
+                right = mid - 1
+            }
+        }      
+    }
+    return -1
+}

@@ -1,0 +1,38 @@
+func removeExtraSpaces(s []byte) []byte {
+    left := 0
+    for right := 0; right < len(s); right++ {
+        if s[right] != ' ' {
+            if left != 0 {
+                s[left] = ' '
+                left++
+            }
+            for right < len(s) && s[right] != ' ' {
+                s[left] = s[right]
+                left++
+                right++
+            }
+        }
+    }
+    return s[:left]
+}
+
+func reverseString(s []byte) {
+    for i, j := 0, len(s) - 1; i < j; i, j = i + 1, j - 1 {
+        s[i], s[j] = s[j], s[i]
+    }
+}
+
+func reverseWords(s string) string {
+    str := removeExtraSpaces([]byte(s))
+    reverseString(str)
+    i := 0
+    for j := 0; j <= len(str); j++ {
+        //if str[j] == ' ' || j == len(str) ×
+        //更改判断顺序会导致数组越界错误 str[len(str)]
+        if j == len(str) || str[j] == ' ' {
+            reverseString(str[i:j])
+            i = j + 1
+        }
+    }
+    return string(str)
+}

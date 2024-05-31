@@ -1,0 +1,35 @@
+func letterCombinations(digits string) []string {
+	var ans []string
+	var s string
+	var letterMap = []string{
+		"",
+		"",
+		"abc",
+		"def",
+		"ghi",
+		"jkl",
+		"mno",
+		"pqrs",
+		"tuv",
+		"wxyz",
+	}
+	var backtracking func(digits string, index int)
+	backtracking = func(digits string, index int) {
+		if index == len(digits) {
+			ans = append(ans, s)
+            return
+		}
+		digit := int(digits[index] - '0')
+        letter := letterMap[digit]
+        for i := 0; i < len(letter); i++ {
+            s += string(letter[i])
+            backtracking(digits, index+1)
+            s = s[:len(s)-1]
+        }
+	}
+    if len(digits) == 0 {
+        return ans
+    }
+    backtracking(digits, 0)
+    return ans
+}

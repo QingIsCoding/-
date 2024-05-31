@@ -1,0 +1,27 @@
+/**
+ * Definition for a binary tree node.
+ * type TreeNode struct {
+ *     Val int
+ *     Left *TreeNode
+ *     Right *TreeNode
+ * }
+ */
+func constructMaximumBinaryTree(nums []int) *TreeNode {
+    var traversal func(nums []int, left, right int) *TreeNode
+    traversal = func(nums []int, left, right int) *TreeNode {
+        if left == right {
+            return nil
+        }
+        maxValueIndex := left
+        for i := left + 1; i < right; i++ {
+            if nums[i] > nums[maxValueIndex] {
+                maxValueIndex = i
+            }
+        }
+        root := &TreeNode{nums[maxValueIndex], nil, nil}
+        root.Left = traversal(nums, left, maxValueIndex)
+        root.Right = traversal(nums, maxValueIndex + 1, right)
+        return root
+    }
+    return traversal(nums, 0, len(nums))
+}

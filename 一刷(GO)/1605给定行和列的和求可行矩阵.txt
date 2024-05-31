@@ -1,0 +1,20 @@
+func restoreMatrix(rowSum []int, colSum []int) [][]int {
+    m, n := len(rowSum), len(colSum)
+    ans := make([][]int, m)
+    for i := range ans {
+        ans[i] = make([]int, n)
+    }
+    for i, j := 0, 0; i < m && j < n; {
+        v1, v2 := rowSum[i], colSum[j]
+        if v1 < v2 {
+            ans[i][j] = v1
+            colSum[j] -= v1
+            i++
+        } else {
+            ans[i][j] = v2
+            rowSum[i] -= v2
+            j++
+        }
+    }
+    return ans
+}

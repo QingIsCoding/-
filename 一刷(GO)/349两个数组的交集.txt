@@ -1,0 +1,16 @@
+func intersection(nums1 []int, nums2 []int) []int {
+    structMap1, structMap2 := make(map[int]struct{}), make(map[int]struct{})
+    ans := make([]int, 0)
+    for _, v1 := range nums1 {
+        structMap1[v1] = struct{}{}
+    }
+    for _, v2 := range nums2 {
+        structMap2[v2] = struct{}{}
+    }
+    for key := range structMap1 {
+        if _, ok := structMap2[key]; ok {
+            ans = append(ans, key)
+        }
+    }
+    return ans
+}

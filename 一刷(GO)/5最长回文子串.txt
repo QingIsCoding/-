@@ -1,0 +1,27 @@
+func longestPalindrome(s string) string {
+    sz := len(s)
+    left, right := 0, 0
+    curLen, maxLen := 0, 0
+    //范围[i,j]的子串是否是回文子串
+    dp := make([][]bool, sz)
+    for i := 0; i < sz; i++ {
+        dp[i] = make([]bool, sz)
+    }
+    for i := sz - 1; i >= 0; i-- {
+        for j := i; j <= sz - 1; j++ {
+            if s[i] == s[j] {
+                if j - i <= 1 || (j - i > 1 && dp[i + 1][j - 1]) {
+                    dp[i][j] = true
+                    curLen = j - i + 1
+                    if curLen > maxLen {
+                        maxLen = curLen
+                        left = i
+                        right = j
+                    }
+                }
+            }
+        }
+    }
+    //s[left: right + 1] <=> s[left, right) <=> s[left]...s[right]
+    return s[left: right + 1]
+}

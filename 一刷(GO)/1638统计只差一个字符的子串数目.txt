@@ -1,0 +1,22 @@
+func countSubstrings(s string, t string) int {
+    ans := 0
+    lens, lent := len(s), len(t)
+    //s[s1]~s[s2]   t[t1]~t[t2]
+    for s1 := 0; s1 < lens; s1++ {
+        for t1 := 0; t1 < lent; t1++ {
+            diff := 0
+            //i = s2 - s1 = t2 - t1
+            for i := 0; s1 + i < lens && t1 + i < lent; i++ {
+                if s[s1 + i] != t[t1 + i] {
+                    diff++
+                }
+                if diff == 1 {
+                    ans++
+                } else if diff > 1 {
+                    break
+                }
+            }
+        }
+    }
+    return ans
+}

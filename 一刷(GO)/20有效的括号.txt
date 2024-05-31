@@ -1,0 +1,31 @@
+func isValid(s string) bool {
+    if len(s) % 2 != 0 {
+        return false
+    }
+    stack := make([]rune, 0)
+    for _, ch := range s {
+        //三种左括号
+        if ch == '(' {
+            stack = append(stack, ')')
+        } else if ch == '[' {
+            stack = append(stack, ']')
+        } else if ch == '{' {
+            stack = append(stack, '}')
+        //1.多了右括号
+        } else if len(stack) == 0 {
+            return false
+        //2.左右括号不匹配
+        } else if ch != stack[len(stack)-1] {
+            return false
+        //当前左右括号匹配
+        } else if ch == stack[len(stack)-1] {
+            stack = stack[:len(stack)-1]
+        }
+    }
+    //3.多了左括号
+    if len(stack) != 0 {
+        return false
+    }
+    //全部左右括号匹配
+    return true
+}

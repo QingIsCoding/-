@@ -1,0 +1,37 @@
+func spiralOrder(matrix [][]int) []int {
+	m, n := len(matrix), len(matrix[0])
+    left, right, up, down := 0, n-1, 0, m-1
+	ans := make([]int, 0)
+    maxLen := m * n
+	for {
+        for j := left; j <= right; j++ {
+            ans = append(ans, matrix[up][j])
+        }
+        if len(ans) == maxLen {
+            break
+        }
+        up++
+        for i := up; i <= down; i++ {
+            ans = append(ans, matrix[i][right])
+        }
+        if len(ans) == maxLen {
+            break
+        }
+        right--
+        for j := right; j >= left; j-- {
+            ans = append(ans, matrix[down][j])
+        }
+        if len(ans) == maxLen {
+            break
+        }
+        down--
+        for i := down; i >= up; i-- {
+            ans = append(ans, matrix[i][left])
+        }
+        if len(ans) == maxLen {
+            break
+        }
+        left++
+    }
+	return ans
+}

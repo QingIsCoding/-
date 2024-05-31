@@ -1,0 +1,17 @@
+func reverse(s []byte) {
+	for i, j := 0, len(s)-1; i < j; i, j = i+1, j-1 {
+		s[i], s[j] = s[j], s[i]
+	}
+}
+
+func reverseStr(s string, k int) string {
+	str := []byte(s)
+	for i := 0; i < len(s); i += 2 * k {
+		if i+k <= len(s) {
+			reverse(str[i : i+k])
+		} else {
+			reverse(str[i:])
+		}
+	}
+	return string(str)
+}

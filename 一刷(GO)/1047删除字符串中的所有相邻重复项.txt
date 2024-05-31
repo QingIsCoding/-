@@ -1,0 +1,11 @@
+func removeDuplicates(s string) string {
+    ans := make([]rune, 0)
+    for _, ch := range s {
+        if len(ans) == 0 || ch != ans[len(ans)-1] {
+            ans = append(ans, ch)
+        } else {
+            ans = ans[:len(ans)-1]
+        }
+    }
+    return string(ans)
+}

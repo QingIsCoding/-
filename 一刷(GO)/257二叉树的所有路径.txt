@@ -1,0 +1,28 @@
+/**
+ * Definition for a binary tree node.
+ * type TreeNode struct {
+ *     Val int
+ *     Left *TreeNode
+ *     Right *TreeNode
+ * }
+ */
+func binaryTreePaths(root *TreeNode) []string {
+    ans := make([]string, 0)
+    var path string
+    var traversal func(node *TreeNode, path string)
+    traversal = func(node *TreeNode, path string) {
+        path += strconv.Itoa(node.Val)
+        if node.Left == nil && node.Right == nil {
+            ans = append(ans, path)
+            return
+        }
+        if node.Left != nil {
+            traversal(node.Left, path+"->")
+        }
+        if node.Right != nil {
+            traversal(node.Right, path+"->")
+        }
+    }
+    traversal(root, path)
+    return ans
+}

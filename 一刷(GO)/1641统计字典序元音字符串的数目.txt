@@ -1,0 +1,16 @@
+func countVowelStrings(n int) int {
+    ans := 0
+    //dp[i][j] = dp[i][j - 1] + dp[i - 1][j]
+    //i:字符串的数量
+    //j:以j结尾 01234分别代表aeiou
+    dp := []int{1, 1, 1, 1, 1}
+    for i := 1; i < n; i++ {
+        for j := 1; j < 5; j++ {
+            dp[j] += dp[j - 1]
+        }
+    }
+    for i := 0; i < 5; i++ {
+        ans += dp[i]
+    }
+    return ans
+}

@@ -1,0 +1,82 @@
+type node struct {
+	val  int
+	next *node
+}
+
+type MyLinkedList struct {
+	size      int
+	dummyHead *node
+}
+
+func Constructor() MyLinkedList {
+	return MyLinkedList{0, &node{}}
+}
+
+func (this *MyLinkedList) Get(index int) int {
+	if index >= this.size {
+		return -1
+	}
+	cur := this.dummyHead
+	for index > 0 {
+		cur = cur.next
+		index--
+	}
+	return cur.next.val
+}
+
+func (this *MyLinkedList) AddAtHead(val int) {
+	newNode := &node{val, nil}
+	newNode.next = this.dummyHead.next
+	this.dummyHead.next = newNode
+	this.size++
+}
+
+func (this *MyLinkedList) AddAtTail(val int) {
+	newNode := &node{val, nil}
+	cur := this.dummyHead
+	for cur.next != nil {
+		cur = cur.next
+	}
+	cur.next = newNode
+	this.size++
+}
+
+func (this *MyLinkedList) AddAtIndex(index int, val int) {
+	if index > this.size {
+		return
+	} else if index == this.size {
+		this.AddAtTail(val)
+	} else {
+		cur := this.dummyHead
+		for index > 0 {
+			cur = cur.next
+			index--
+		}
+		newNode := &node{val, cur.next}
+		cur.next = newNode
+		this.size++
+	}
+}
+
+func (this *MyLinkedList) DeleteAtIndex(index int) {
+	if index >= this.size {
+		return
+	}
+	cur := this.dummyHead
+	for index > 0 {
+		cur = cur.next
+		index--
+	}
+	cur.next = cur.next.next
+	this.size--
+}
+
+/**
+ * Your MyLinkedList object will be instantiated and called as such:
+ * obj := Constructor();
+ * param_1 := obj.Get(index);
+ * obj.AddAtHead(val);
+ * obj.AddAtTail(val);
+ * obj.AddAtIndex(index,val);
+ * obj.DeleteAtIndex(index);
+ */

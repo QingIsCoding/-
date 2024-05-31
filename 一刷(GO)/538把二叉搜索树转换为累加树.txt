@@ -1,0 +1,23 @@
+/**
+ * Definition for a binary tree node.
+ * type TreeNode struct {
+ *     Val int
+ *     Left *TreeNode
+ *     Right *TreeNode
+ * }
+ */
+func convertBST(root *TreeNode) *TreeNode {
+    preVal := 0
+    var traversal func(cur *TreeNode)
+    traversal = func(cur *TreeNode) {
+        if cur == nil {
+            return
+        }
+        traversal(cur.Right)
+        cur.Val += preVal
+        preVal = cur.Val
+        traversal(cur.Left)
+    }
+    traversal(root)
+    return root
+}

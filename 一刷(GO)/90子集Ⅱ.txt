@@ -1,0 +1,27 @@
+func subsetsWithDup(nums []int) [][]int {
+    var ans [][]int
+    var path []int
+    used := make([]bool, len(nums))
+    sort.Ints(nums)
+    var backtracking func(nums []int, startIndex int, used []bool)
+    backtracking = func(nums []int, startIndex int, used []bool) {
+        temp := make([]int, len(path))
+        copy(temp, path)
+        ans = append(ans, temp)
+        if startIndex == len(nums) {
+            return
+        }
+        for i := startIndex; i < len(nums); i++ {
+            if i > 0 && nums[i] == nums[i-1] && used[i-1] == false {
+                continue
+            }
+            path = append(path, nums[i])
+            used[i] = true
+            backtracking(nums, i + 1, used)
+            used[i] = false
+            path = path[:len(path)-1]
+        }
+    }
+    backtracking(nums, 0, used)
+    return ans
+}

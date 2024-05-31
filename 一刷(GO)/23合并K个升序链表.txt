@@ -1,0 +1,40 @@
+/**
+ * Definition for singly-linked list.
+ * type ListNode struct {
+ *     Val int
+ *     Next *ListNode
+ * }
+ */
+func merge(l1, l2 *ListNode) *ListNode {
+    dummyHead := & ListNode{}
+    cur := dummyHead
+    for l1 != nil && l2 != nil {
+        if l1.Val <= l2.Val {
+            cur.Next = l1
+            l1 = l1.Next
+        } else {
+            cur.Next = l2
+            l2 = l2.Next
+        }
+        cur = cur.Next
+    }
+    for l1 != nil {
+        cur.Next = l1
+        l1 = l1.Next
+        cur = cur.Next
+    }
+    for l2 != nil {
+        cur.Next = l2
+        l2 = l2.Next
+        cur = cur.Next
+    }
+    return dummyHead.Next
+}
+
+func mergeKLists(lists []*ListNode) *ListNode {
+    dummyHead := &ListNode{}
+    for _, list := range lists {
+        dummyHead.Next = merge(dummyHead.Next, list)
+    }
+    return dummyHead.Next
+}

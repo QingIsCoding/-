@@ -1,0 +1,50 @@
+func getNext(needle string) []int {
+	szn := len(needle)
+	if szn == 1 {
+		return []int{-1}
+	}
+	next := make([]int, szn)
+	//前缀不包含尾字符，后缀不包含首字符
+	//退无可退，特殊标记为-1
+	//下标为1的位置，前面只有一个字符(下标为0)，没有前后缀
+	next[0], next[1] = -1, 0
+	//准备计算从下标为2开始的next数组的值
+	//cn:下标为i-1的字符与下标为cn的字符进行比较
+	i, cn := 2, 0
+	for i < szn {
+		if needle[i - 1] == needle[cn] {
+			cn++
+			next[i] = cn
+			i++
+		} else if cn > 0 {
+			cn = next[cn]
+		} else if cn == 0 {
+			next[i] = 0
+			i++
+		}
+	}
+	return next
+}
+
+func strStr(haystack string, needle string) int {
+	szh, szn := len(haystack), len(needle)
+	//i1:haystack中比较的位置
+	//i2:needle中比较的位置
+	i1, i2 := 0, 0
+	next := getNext(needle)
+	for i1 < szh && i2 < szn {
+		if haystack[i1] == needle[i2] {
+			i1++
+			i2++
+		} else if next[i2] >= 0 {
+			i2 = next[i2]
+		} else if next[i2] == -1 {
+			i1++
+		}
+	}
+	if i2 == szn {
+		return i1 - i2
+	} else {
+		return -1
+	}
+}
